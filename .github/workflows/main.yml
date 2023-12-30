@@ -20,6 +20,7 @@ jobs:
               run: npm install 
 
     Trivy:
+        needs: Testing
         runs-on : ubuntu-latest
         steps:
             - name: Checkout code
@@ -35,6 +36,7 @@ jobs:
                 severity: 'CRITICAL'
 
     Docker_build_push:
+        needs: Trivy
         runs-on: ubuntu-latest
         steps:
             - name: Set up QEMU

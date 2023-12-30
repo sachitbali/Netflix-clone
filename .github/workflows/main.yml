@@ -19,13 +19,19 @@ jobs:
             - name: install dependency
               run: npm install 
 
-    File_scan:
-        needs: Testing
-        runs-on: ubuntu-latest
+    Trivy:
+        runs-on : ubuntu-latest
         steps:
-            - name: install trivy
-              run: |
-                trivy fs  . > trivy.txt
-
+            - name: Checkout code
+              uses: actions/checkout@v3
+            
+            - name: Run Trivy vulnerability scanner in repo mode
+              uses: aquasecurity/trivy-action@master
+              with:
+                scan-type: 'fs'
+                ignore-unfixed: true
+                format: 'sarif'
+                output: 'trivy-results.sarif'
+                severity: 'CRITICAL'
 
     
